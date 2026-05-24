@@ -96,6 +96,10 @@ export const setupStudentGrid = (
   const filterInput = document.getElementById(
     'student-filter-input',
   ) as HTMLInputElement | null
+  const searchToggleButton = document.getElementById(
+    'student-filter-toggle',
+  ) as HTMLButtonElement | null
+  const searchPanel = document.getElementById('student-filter-panel')
   const normalFilter = document.getElementById(
     'student-filter-normal',
   ) as HTMLInputElement | null
@@ -110,6 +114,26 @@ export const setupStudentGrid = (
   ) as HTMLButtonElement | null
 
   let sortDirection: 'asc' | 'desc' = 'asc'
+  const setSearchOpen = (isOpen: boolean) => {
+    searchPanel?.toggleAttribute('hidden', !isOpen)
+    searchToggleButton?.setAttribute('aria-expanded', String(isOpen))
+    searchToggleButton?.setAttribute(
+      'aria-label',
+      isOpen ? '検索を閉じる' : '検索を表示',
+    )
+    searchToggleButton?.classList.toggle('is-active', isOpen)
+  }
+  setSearchOpen(Boolean(filterInput?.value?.trim()))
+  searchToggleButton?.addEventListener('click', () => {
+    const isOpen = !searchPanel || searchPanel.hasAttribute('hidden')
+    setSearchOpen(isOpen)
+    if (isOpen) {
+      filterInput?.focus()
+    }
+  })
+  filterInput?.addEventListener('focus', () => {
+    setSearchOpen(true)
+  })
   const sortCards = (sortMode: string, direction: 'asc' | 'desc') => {
     const cards = [...grid.querySelectorAll<HTMLElement>('.grid-item')]
     const key = sortMode === 'name-order' ? 'nameSortOrder' : 'defaultOrder'

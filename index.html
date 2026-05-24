@@ -36,10 +36,22 @@
         <section id="card-list">
           <div class="grid" id="studentGrid">
             <div class="controls-row">
-              <label class="search-wrapper" for="student-filter-input">
-                名前フィルター
-                <input id="student-filter-input" class="student-filter-input" type="text" placeholder="生徒名" autocomplete="off" />
-              </label>
+              <div class="search-wrapper">
+                <button
+                  id="student-filter-toggle"
+                  class="search-toggle-button"
+                  type="button"
+                  aria-expanded="false"
+                  aria-controls="student-filter-panel"
+                  aria-label="検索を表示"
+                >
+                  <span aria-hidden="true">🔍</span>
+                </button>
+                <div id="student-filter-panel" class="search-panel" hidden>
+                  <label class="search-label" for="student-filter-input">名前フィルター</label>
+                  <input id="student-filter-input" class="student-filter-input" type="text" placeholder="生徒名" autocomplete="off" />
+                </div>
+              </div>
               <fieldset class="category-filter-fieldset">
                 <legend>表示対象</legend>
                 <label><input id="student-filter-normal" type="checkbox" checked />通常生徒</label>
