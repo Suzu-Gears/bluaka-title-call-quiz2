@@ -109,6 +109,7 @@ export async function downloadR2Folder(folderPath: string, localPath: string) {
     await Promise.all(downloadPromises)
   } catch (error) {
     console.error('Error downloading folder:', error)
+    throw error
   }
 }
 

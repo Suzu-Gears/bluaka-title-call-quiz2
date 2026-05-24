@@ -34,16 +34,8 @@ async function getSchaleDB(): Promise<Record<string, any>> {
       path.basename(schaledbFilePath),
     )
   ) {
-    try {
-      const data = await fetchSchaleDB()
-      saveJSON(schaledbFilePath, data)
-    } catch (error) {
-      console.error(
-        'Failed to fetch SchaleDB data. Continuing with empty dataset.',
-        error,
-      )
-      return []
-    }
+    const data = await fetchSchaleDB()
+    saveJSON(schaledbFilePath, data)
   }
   return readLocalJSON(schaledbFilePath)
 }
@@ -60,7 +52,6 @@ async function fetchSchaleDB(): Promise<Record<string, any>> {
 
 export async function getMissingAudioBySchaledb(): Promise<void> {
   const data = await getStudentsData()
-  let failedDownloads: string[] = []
   for (const key in data) {
     if (data.hasOwnProperty(key)) {
       const student: Student = data[key]
@@ -93,7 +84,7 @@ export async function getMissingAudioBySchaledb(): Promise<void> {
           } catch (err) {
             const error = err as Error
             console.error(`Failed to download ${audioUrl}: ${error.message}`)
-            failedDownloads.push(audioFileName)
+            throw error
           }
         }
       } else {
@@ -101,17 +92,11 @@ export async function getMissingAudioBySchaledb(): Promise<void> {
       }
     }
   }
-  if (failedDownloads.length > 0) {
-    console.log('Failed to download audio files for the following students:')
-    failedDownloads.forEach((audioFileName) => console.log(audioFileName))
-  } else {
-    console.log('All audio files downloaded successfully.')
-  }
+  console.log('All audio files downloaded successfully.')
 }
 
 export async function getMissingImageBySchaledb(): Promise<void> {
   const data = await getStudentsData()
-  let failedDownloads: string[] = []
   for (const key in data) {
     if (data.hasOwnProperty(key)) {
       const student: Student = data[key]
@@ -128,19 +113,14 @@ export async function getMissingImageBySchaledb(): Promise<void> {
         } catch (err) {
           const error = err as Error
           console.error(`Failed to download ${imageUrl}: ${error.message}`)
-          failedDownloads.push(imageFileName)
+          throw error
         }
       } else {
         console.log(`File already exists, skipping: ${imageFileName}`)
       }
     }
   }
-  if (failedDownloads.length > 0) {
-    console.log('Failed to download image files for the following students:')
-    failedDownloads.forEach((imageFileName) => console.log(imageFileName))
-  } else {
-    console.log('All image files downloaded successfully.')
-  }
+  console.log('All image files downloaded successfully.')
 }
 
 async function downloadFile(url: string, localPath: string): Promise<void> {

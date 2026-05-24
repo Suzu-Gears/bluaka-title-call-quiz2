@@ -42,6 +42,10 @@ npm test
 | `npm run local-cache:fetch` | **サーバーサイド（ローカル）** | `.env` ファイルを参照してローカルでキャッシュ取得 |
 | `npm run local-cache:purge` | **サーバーサイド（ローカル）** | ローカルキャッシュを削除 |
 
+> **補足（CI環境）**  
+> Copilot Workspace などの CI 環境では `cache:fetch` の外部フェッチをスキップし、`public/data` に空の JSON/CSV を生成してビルドを継続します。  
+> CI 以外でフェッチに失敗した場合は即座に異常終了します。
+
 ---
 
 ## 2. ビルド時の処理の流れ

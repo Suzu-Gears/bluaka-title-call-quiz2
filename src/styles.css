@@ -63,11 +63,10 @@ select:focus-visible {
   z-index: -1;
   pointer-events: none;
   background-image:
-    repeating-linear-gradient(
-      to right,
-      transparent 0 var(--notebook-line-start),
-      var(--color-bg-paper-line) var(--notebook-line-start) var(--notebook-line-end),
-      transparent var(--notebook-line-end) var(--notebook-line-stop)
+    radial-gradient(
+      circle at var(--notebook-line-width) var(--notebook-line-start),
+      var(--color-bg-paper-line) 0 var(--notebook-line-width),
+      transparent var(--notebook-line-width)
     ),
     linear-gradient(
       180deg,
@@ -75,8 +74,8 @@ select:focus-visible {
       rgb(var(--color-bg-main-rgb) / 0) 100%
     );
   background-position: 0 0, 0 0;
-  background-repeat: repeat-y, no-repeat;
-  background-size: 100% var(--notebook-row-height), 100% 100%;
+  background-repeat: repeat, no-repeat;
+  background-size: var(--notebook-line-stop) var(--notebook-row-height), 100% 100%;
 }
 
 header {
