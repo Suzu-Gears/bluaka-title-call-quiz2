@@ -114,25 +114,33 @@ export const setupStudentGrid = (
   ) as HTMLButtonElement | null
 
   let sortDirection: 'asc' | 'desc' = 'asc'
-  const setSearchOpen = (isOpen: boolean) => {
-    searchPanel?.toggleAttribute('hidden', !isOpen)
-    searchToggleButton?.setAttribute('aria-expanded', String(isOpen))
-    searchToggleButton?.setAttribute(
-      'aria-label',
-      isOpen ? '検索を閉じる' : '検索を表示',
-    )
-    searchToggleButton?.classList.toggle('is-active', isOpen)
+  const updateSearchVisibility = (isOpen: boolean) => {
+    if (searchPanel) {
+      searchPanel.toggleAttribute('hidden', !isOpen)
+    }
+    if (searchToggleButton) {
+      searchToggleButton.setAttribute('aria-expanded', String(isOpen))
+      searchToggleButton.setAttribute(
+        'aria-label',
+        isOpen ? '検索を閉じる' : '検索を表示',
+      )
+      searchToggleButton.classList.toggle('is-active', isOpen)
+    }
   }
-  setSearchOpen(Boolean(filterInput?.value?.trim()))
+  const shouldOpenSearchInitially = Boolean(filterInput?.value?.trim())
+  updateSearchVisibility(shouldOpenSearchInitially)
   searchToggleButton?.addEventListener('click', () => {
-    const isOpen = !searchPanel || searchPanel.hasAttribute('hidden')
-    setSearchOpen(isOpen)
-    if (isOpen) {
+    if (!searchPanel) {
+      return
+    }
+    const shouldOpen = searchPanel.hasAttribute('hidden')
+    updateSearchVisibility(shouldOpen)
+    if (shouldOpen) {
       filterInput?.focus()
     }
   })
   filterInput?.addEventListener('focus', () => {
-    setSearchOpen(true)
+    updateSearchVisibility(true)
   })
   const sortCards = (sortMode: string, direction: 'asc' | 'desc') => {
     const cards = [...grid.querySelectorAll<HTMLElement>('.grid-item')]
