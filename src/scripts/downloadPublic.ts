@@ -12,7 +12,7 @@ const projectRoot = appRoot.path
 const dataFolderPath = path.join(projectRoot, 'public/data')
 const audioFolderPath = path.join(projectRoot, 'public/audio')
 const imageFolderPath = path.join(projectRoot, 'public/image')
-const isCIEnvironment =
+const isCI =
   Boolean(process.env.CI) ||
   Boolean(process.env.GITHUB_ACTIONS) ||
   Boolean(process.env.COPILOT_WORKSPACE)
@@ -37,7 +37,7 @@ async function writeMockCacheFiles(): Promise<void> {
 }
 
 try {
-  if (isCIEnvironment) {
+  if (isCI) {
     console.log('CI environment detected. Skipping remote fetch.')
     await writeMockCacheFiles()
   } else {
